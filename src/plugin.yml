@@ -1,0 +1,5 @@
+name: Maintenance
+author: LocalExcpetion
+version: 1.0.Pre
+
+main: de.localexception.maintenance.Main
