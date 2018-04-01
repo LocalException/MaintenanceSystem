@@ -8,6 +8,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
+
+import java.util.List;
 
 /**********************************************************************
  *                                                                    *
@@ -22,24 +25,31 @@ import net.md_5.bungee.event.EventHandler;
 
 public class Listener_LoginEvent implements Listener{
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(LoginEvent event){
+
+        String uuid = event.getConnection().getUniqueId().toString().replaceAll("-","");
+        String name = event.getConnection().getName().toString();
+
+        List<String> whitelist = Data.whitelist;
 
         if(Data.maintenance){
 
-            String uuid = event.getConnection().getUniqueId().toString();
-
-            if(!Data.whitelist.contains(uuid)){
-                event.setCancelReason(new TextComponent(Messages.cancelreason()));
-                event.setCancelled(true);
-
-                for(ProxiedPlayer proxiedPlayer : BungeeCord.getInstance().getPlayers()){
-                    if(proxiedPlayer.hasPermission("maintenance.notify")){
-                        proxiedPlayer.sendMessage(new TextComponent(Data.prefix+ Messages.teamnotify.replaceAll("%player%",event.getConnection().getName())));
-                    }
-                }
-
+            System.out.println(uuid);
+            if(whitelist.contains(uuid)){
+                event.setCancelled(false);
+                return;
             }
+
+            event.setCancelReason(new TextComponent(Messages.cancelreason()));
+            event.setCancelled(true);
+
+            for(ProxiedPlayer proxiedPlayer : BungeeCord.getInstance().getPlayers()){
+                if(proxiedPlayer.hasPermission("maintenance.notify")){
+                    proxiedPlayer.sendMessage(new TextComponent(Data.prefix+ Messages.teamnotify.replaceAll("%player%",name)));
+                }
+            }
+
 
         }
 

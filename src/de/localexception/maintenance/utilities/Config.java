@@ -26,6 +26,7 @@ public class Config {
     private static File config = new File(ordner,"config.yml");
     private static File messages = new File(ordner,"messages.yml");
     private static File whitelist = new File(ordner,"whitelist.yml");
+    private static File motd = new File(ordner,"motd.yml");
 
     public static void init(){
         if(!ordner.exists()){
@@ -39,7 +40,7 @@ public class Config {
                 Configuration cfg = YamlConfiguration.getProvider(YamlConfiguration.class).load(config);
 
                 cfg.set("Prefix","&7[&4Maintenance&7]");
-                cfg.set("Server","LocalException.eu");
+                cfg.set("Server","YourServer.net");
                 cfg.set("Maintenance",false);
                 cfg.set("MaintenanceReason","Updates");
                 cfg.set("MaintenanceDuration","Custom");
@@ -110,10 +111,48 @@ public class Config {
             }
         }
 
+        if(!motd.exists()){
+            try {
+                motd.createNewFile();
+
+                Configuration mtd = YamlConfiguration.getProvider(YamlConfiguration.class).load(motd);
+
+                mtd.set("MotdSystem", true);
+
+                mtd.set("NormalMotd.Line1","&2YourServer&7.&2net &8- &7Your &aMinecraft &7Network &8- &f[&d1.8&f]");
+                mtd.set("NormalMotd.Line2","&l&6+ &4Maintenance System");
+
+                mtd.set("MaintenanceMotd.Line1","&2YourServer&7.&2net &8- &7Your &aMinecraft &7Network &8- &f[&d1.8&f]");
+                mtd.set("MaintenanceMotd.Line2","&cOur Network is currently in Maintenance!");
+
+                mtd.set("MaintenanceMessage","&4Maintenance");
+
+                mtd.set("Slots",100);
+
+                List<String> info = new ArrayList<>();
+
+                info.add("&7&m-------------------------");
+                info.add("");
+                info.add("&aWebsite&7: www.YourWebsite.net");
+                info.add("&aTeamSpeak&7: ts.YourTeamspeak.net");
+                info.add("&aTwitter&7: @YourTwitter");
+                info.add("");
+                info.add("&7&m-------------------------");
+
+                mtd.set("PlayerInfo",info);
+
+                YamlConfiguration.getProvider(YamlConfiguration.class).save(mtd,motd);
+
+            } catch (IOException e) {
+                //e.printStackTrace();
+            }
+        }
+
         try {
             Configuration cfg = YamlConfiguration.getProvider(YamlConfiguration.class).load(config);
             Configuration msg = YamlConfiguration.getProvider(YamlConfiguration.class).load(messages);
             Configuration wl = YamlConfiguration.getProvider(YamlConfiguration.class).load(whitelist);
+            Configuration mtd = YamlConfiguration.getProvider(YamlConfiguration.class).load(motd);
 
             Data.prefix = cfg.getString("Prefix").replaceAll("&","§")+" §r";
             Data.servername = cfg.getString("Server");
@@ -143,6 +182,13 @@ public class Config {
             Messages.cancellist = msg.getStringList("JoinMessage");
 
             Data.whitelist = wl.getStringList("Whitelist");
+
+            Motd.motdsystem = mtd.getBoolean("MotdSystem");
+            Motd.slots = mtd.getInt("Slots");
+            Motd.normalmotd = new String[]{mtd.getString("NormalMotd.Line1").replaceAll("&","§"),mtd.getString("NormalMotd.Line2").replaceAll("&","§")};
+            Motd.maintenancemotd = new String[]{mtd.getString("MaintenanceMotd.Line1").replaceAll("&","§"),mtd.getString("MaintenanceMotd.Line2").replaceAll("&","§")};
+            Motd.maintenancemessage = mtd.getString("MaintenanceMessage").replaceAll("&","§");
+            Motd.playerinfo = mtd.getStringList("PlayerInfo");
 
         } catch (IOException e) {
             //e.printStackTrace();

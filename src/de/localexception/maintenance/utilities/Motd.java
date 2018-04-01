@@ -13,27 +13,27 @@ import java.util.List;
  **********************************************************************/
 
 
-public class Messages {
+public class Motd {
 
-    public static String teamnotify;
-    public static String nopermission;
+    public static String[] normalmotd;
+    public static String[] maintenancemotd;
 
-    public static List<String> cancellist;
+    public static List<String> playerinfo;
 
-    public static String cancelreason(){
+    public static String getPlayerInfo(){
 
-        String reason = "";
+        String info = "";
 
-        for(int i = 0; i < cancellist.size(); i++){
-            if(i+1 < cancellist.size()){
-                reason = reason+cancellist.get(i)
+        for(int i = 0; i < playerinfo.size(); i++){
+            if(i+1 < playerinfo.size()){
+                info = info+playerinfo.get(i)
                         .replaceAll("&","§")
                         .replaceAll("%prefix%",Data.prefix)
                         .replaceAll("%duration%",Data.maintenanceduration)
                         .replaceAll("%reason%",Data.maintenancereason)
                         .replaceAll("%servername%",Data.servername)+"\n§r";
             }else{
-                reason = reason+cancellist.get(i)
+                info = info+playerinfo.get(i)
                         .replaceAll("&","§")
                         .replaceAll("%prefix%",Data.prefix)
                         .replaceAll("%duration%",Data.maintenanceduration)
@@ -42,25 +42,15 @@ public class Messages {
             }
         }
 
-        return reason;
+        return info;
     }
 
-    //Whitelist Command
 
-    public static String alreadyonwhitelist;
-    public static String isnotonwhitelist;
-    public static String addedtowhitelist;
-    public static String removedfromwhitelist;
+    public static String maintenancemessage;
 
-    //Maintenance Command
-
-    public static String alreadymaintenance;
-    public static String isnotmaintenance;
-    public static String maintenanceactive;
-    public static String maintenancedeactive;
-    public static String newmaintenancereason;
-    public static String newmaintenanceduration;
+    public static boolean motdsystem;
 
 
+    public static int slots;
 
 }

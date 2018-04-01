@@ -35,7 +35,7 @@ public class Command_Whitelist extends Command{
 
                 if(args[0].equalsIgnoreCase("add")){
                     String target = args[1];
-                    String uuid = UUIDFetcher.getUUID(target);
+                    String uuid = UUIDFetcher.getUUID(target).replaceAll("-","");
 
                     if(Data.whitelist.contains(uuid)){
                         sender.sendMessage(new TextComponent(Data.prefix+Messages.alreadyonwhitelist));
@@ -46,7 +46,7 @@ public class Command_Whitelist extends Command{
 
                 }else if(args[0].equalsIgnoreCase("remove")){
                     String target = args[1];
-                    String uuid = UUIDFetcher.getUUID(target);
+                    String uuid = UUIDFetcher.getUUID(target.replaceAll("-",""));
 
                     if(Data.whitelist.contains(uuid)){
                         Data.whitelist.remove(uuid);

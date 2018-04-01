@@ -3,6 +3,7 @@ package de.localexception.maintenance;
 import de.localexception.maintenance.commands.Command_Maintenance;
 import de.localexception.maintenance.commands.Command_Whitelist;
 import de.localexception.maintenance.listeners.Listener_LoginEvent;
+import de.localexception.maintenance.listeners.Listener_ProxyPingEvent;
 import de.localexception.maintenance.utilities.Config;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -31,6 +32,7 @@ public class Main extends Plugin{
         getProxy().getPluginManager().registerCommand(this,new Command_Maintenance());
 
         getProxy().getPluginManager().registerListener(this, new Listener_LoginEvent());
+        getProxy().getPluginManager().registerListener(this, new Listener_ProxyPingEvent());
 
         getProxy().getConsole().sendMessage(new TextComponent(
                 "§a\n##     ##    ###    #### ##    ## ######## ######## ##    ##    ###    ##    ##  ######  ######## \n" +
